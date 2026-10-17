@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cbx-stream-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=false
+      - API_V1_PREFIX=/api/v1
+      - CLEANUP_INTERVAL_SECONDS=300
+      - CLEANUP_TTL_SECONDS=3600
+      - MAX_CONCURRENT_TASKS=5
+    volumes:
+      - ./temp_downloads:/app/temp_downloads
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
