@@ -209,6 +209,20 @@ PLATFORM_THEMES: Dict[str, PlatformThemeInfo] = {
         glow_color="rgba(0, 161, 214, 0.5)",
         text_color="#FFFFFF",
     ),
+    "linkedin": PlatformThemeInfo(
+        id="linkedin",
+        name="LinkedIn",
+        icon="linkedin",
+        badge_text="LinkedIn HD Post / Video",
+        primary_color="#0A66C2",
+        secondary_color="#004182",
+        accent_color="#70B5F9",
+        gradient_css="linear-gradient(135deg, rgba(10, 102, 194, 0.85) 0%, rgba(0, 65, 130, 0.65) 100%)",
+        glass_border="1px solid rgba(10, 102, 194, 0.35)",
+        glass_shadow="0 8px 32px 0 rgba(10, 102, 194, 0.25)",
+        glow_color="rgba(10, 102, 194, 0.5)",
+        text_color="#FFFFFF",
+    ),
     "generic": PlatformThemeInfo(
         id="generic",
         name="Universal Media Stream",
@@ -240,6 +254,7 @@ PATTERNS = [
     (r"(?:https?:\/\/)?(?:www\.)?twitch\.tv\/", "twitch"),
     (r"(?:https?:\/\/)?(?:www\.)?vimeo\.com\/", "vimeo"),
     (r"(?:https?:\/\/)?(?:www\.)?bilibili\.com\/video\/", "bilibili"),
+    (r"(?:https?:\/\/)?(?:www\.)?linkedin\.com\/(?:posts\/|feed\/update\/|learning\/|video\/|pulse\/)", "linkedin"),
 ]
 
 
