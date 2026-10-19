@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+  <img src="assets/logo.png" alt="CBX-Stream Emblem Logo" width="110" />
+</p>
+
+<p align="center">
   <a href="https://github.com/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/stargazers"><img src="https://img.shields.io/github/stars/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend?color=6366f1&style=for-the-badge&logo=github" alt="Stars" /></a>
   <a href="https://github.com/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/network/members"><img src="https://img.shields.io/github/forks/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend?color=ec4899&style=for-the-badge&logo=github" alt="Forks" /></a>
   <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" /></a>
