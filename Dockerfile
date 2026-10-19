@@ -10,11 +10,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install system dependencies, FFmpeg, and ca-certificates
+# Install system dependencies, FFmpeg, Git, and Node.js 20 (required for YouTube challenge solving & POT daemon)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     curl \
+    git \
     ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,6 +25,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
+
+# Pre-compile background PO Token server so pot_service can auto-start on port 4416
+RUN git clone https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git /app/bgutil-pot-server && \
+    cd /app/bgutil-pot-server/server && \
+    npm install && \
+    npx tsc
 
 # Copy backend application source code
 COPY . /app/

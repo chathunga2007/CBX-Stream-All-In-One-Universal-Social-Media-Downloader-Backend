@@ -88,6 +88,7 @@ class Settings(BaseSettings):
     # Optional Network / Scraping Overrides
     PROXY_URL: Optional[str] = None
     COOKIES_FILE: Optional[str] = None
+    COOKIES_CONTENT: Optional[str] = None
     COOKIES_FROM_BROWSER: Optional[str] = None
     NODE_PATH: Optional[str] = None
 
@@ -106,11 +107,16 @@ class Settings(BaseSettings):
         self.FFMPEG_PATH = _resolve_ffmpeg_path(self.FFMPEG_PATH)
         self.FFPROBE_PATH = _resolve_ffprobe_path(self.FFPROBE_PATH)
 
-        # Auto-detect cookies.txt in root if not explicitly configured
-        if not self.COOKIES_FILE:
-            default_cookies = self.BASE_DIR / "cookies.txt"
-            if default_cookies.exists():
+        # Auto-write cookies from env secret if COOKIES_CONTENT is provided (for Fly.io / Docker)
+        default_cookies = self.BASE_DIR / "cookies.txt"
+        if self.COOKIES_CONTENT:
+            try:
+                default_cookies.write_text(self.COOKIES_CONTENT, encoding="utf-8")
                 self.COOKIES_FILE = str(default_cookies)
+            except Exception:
+                pass
+        elif not self.COOKIES_FILE and default_cookies.exists():
+            self.COOKIES_FILE = str(default_cookies)
 
         # Auto-detect Node.js for yt-dlp JavaScript challenge solver
         if not self.NODE_PATH:
