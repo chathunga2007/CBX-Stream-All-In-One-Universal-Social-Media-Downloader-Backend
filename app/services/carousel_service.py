@@ -173,7 +173,7 @@ class CarouselService:
     async def proxy_media_stream(self, url: str) -> StreamingResponse:
         """Stream remote media through backend to bypass CORS and CDN referer checks."""
         headers = {
-            "User-Agent": DEFAULT_USER_AGENT,
+            "User-Agent": DEFAULT_HEADERS["User-Agent"],
             "Accept": "*/*",
         }
 
