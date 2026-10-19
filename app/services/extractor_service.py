@@ -55,6 +55,7 @@ class ExtractorService:
             "geo_bypass": True,
             "socket_timeout": 25,
             "user_agent": DEFAULT_USER_AGENT,
+            "noplaylist": not extract_flat,
         }
 
         # Auto-configure JavaScript challenge solver runtime for modern YouTube botguard/EJS
@@ -143,8 +144,19 @@ class ExtractorService:
                 except Exception as e_third:
                     logger.warning(f"Tertiary client rotation failed for {url}: {e_third}")
 
+            # Pick the most accurate error message across attempts (e.g. video unavailable vs anti-bot)
+            all_errors = [str(e) for e in [e_first, locals().get("e_second"), locals().get("e_third")] if e]
+            specific_err = next((e for e in all_errors if "unavailable" in e.lower() or "private" in e.lower() or "deleted" in e.lower()), None)
+            final_err_str = specific_err or first_err_str
+
+            if "This video is unavailable" in final_err_str or "video is unavailable" in final_err_str.lower():
+                raise MediaExtractionError(
+                    message="This video is unavailable, deleted, or removed on YouTube.",
+                    details={"url": url, "error": final_err_str},
+                )
+
             # If it's YouTube bot verification, provide helpful instructions
-            if "Sign in to confirm you’re not a bot" in first_err_str or "confirm you're not a bot" in first_err_str:
+            if "Sign in to confirm you’re not a bot" in final_err_str or "confirm you're not a bot" in final_err_str:
                 friendly_msg = (
                     "YouTube requested bot verification for this video. "
                     "To enable restricted video downloads, please export YouTube cookies into a "
@@ -153,12 +165,12 @@ class ExtractorService:
                 )
                 raise MediaExtractionError(
                     message=friendly_msg,
-                    details={"url": url, "error": first_err_str, "requires_cookies": True},
+                    details={"url": url, "error": final_err_str, "requires_cookies": True},
                 )
 
             raise MediaExtractionError(
-                message=f"Failed to extract media: {first_err_str}",
-                details={"url": url, "error": first_err_str},
+                message=f"Failed to extract media: {final_err_str}",
+                details={"url": url, "error": final_err_str},
             )
 
     def _extract_via_gallery_dl_sync(self, url: str) -> List[Dict[str, Any]]:
