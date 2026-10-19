@@ -254,7 +254,7 @@ PATTERNS = [
     (r"(?:https?:\/\/)?(?:www\.)?twitch\.tv\/", "twitch"),
     (r"(?:https?:\/\/)?(?:www\.)?vimeo\.com\/", "vimeo"),
     (r"(?:https?:\/\/)?(?:www\.)?bilibili\.com\/video\/", "bilibili"),
-    (r"(?:https?:\/\/)?(?:www\.)?linkedin\.com\/(?:posts\/|feed\/update\/|learning\/|video\/|pulse\/)", "linkedin"),
+    (r"(?:https?:\/\/)?(?:[a-zA-Z0-9-]+\.)?(?:linkedin\.com|lnkd\.in)\/", "linkedin"),
 ]
 
 
