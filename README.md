@@ -1,46 +1,66 @@
+<p align="center">
+  <img src="assets/banner.png" alt="CBX-Stream Universal Social Media Downloader" width="100%" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/stargazers"><img src="https://img.shields.io/github/stars/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend?color=6366f1&style=for-the-badge&logo=github" alt="Stars" /></a>
+  <a href="https://github.com/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/network/members"><img src="https://img.shields.io/github/forks/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend?color=ec4899&style=for-the-badge&logo=github" alt="Forks" /></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" /></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" /></a>
+  <a href="https://ffmpeg.org/"><img src="https://img.shields.io/badge/FFmpeg-7.1-007808?style=for-the-badge&logo=ffmpeg&logoColor=white" alt="FFmpeg" /></a>
+  <a href="https://fly.io/"><img src="https://img.shields.io/badge/Fly.io-Live-24185b?style=for-the-badge&logo=flydotio&logoColor=white" alt="Fly.io" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT" /></a>
+</p>
+
+---
+
 # ⚡ CBX-Stream Universal Social Media Downloader Backend
 
 > **Production-Grade, High-Performance Media Streaming, DASH Transcoding & Universal Social Downloader Engine**  
-> Built with **FastAPI**, **yt-dlp**, **gallery-dl**, **FFmpeg**, **Mutagen**, and **WebSockets**.  
-> Specially crafted to integrate seamlessly with `CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Frontend`.
+> Built with **FastAPI**, **yt-dlp**, **gallery-dl**, **FFmpeg**, **curl-cffi**, **bgutil PO-Token Server**, **Mutagen**, and **WebSockets**.  
+> Specially crafted to integrate seamlessly with the Chameleon Glass UI frontend.
 
 ---
 
 ## 🌟 Key Features
 
-- **Deep Metadata & Multi-Tier Format Extraction**:
-  - Automatically analyzes URLs from **YouTube (including 4K, 8K, 60fps, Shorts)**, **TikTok (No-Watermark HD)**, **Instagram (Reels, Posts, Stories, Multi-Photo Carousels)**, **Facebook (Watch, Reels)**, **Twitter/X**, **Reddit**, **Pinterest**, **SoundCloud**, **Vimeo**, **Twitch**, and 1,000+ streaming websites.
-  - Groups raw formats into categorized tiers: `4K Ultra HD`, `2K Quad HD`, `1080p Full HD`, `720p HD`, and `HQ Audio (320kbps MP3 / M4A / FLAC)`.
-  
-- **Chameleon Glass UI Color Palette Generation**:
-  - Automatically identifies the host platform and injects modern **Chameleon Glass UI tokens** (primary color, secondary color, accent color, backdrop blur gradient, and glowing shadows) into the API response for instant frontend styling.
+### 🎬 Universal Media Extraction (1,000+ Platforms)
+- **YouTube (4K, 8K, 60fps HDR & Shorts)**: Bypasses modern YouTube botguard using our integrated Node.js challenge solver and local PO-Token daemon.
+- **TikTok**: Lossless Full HD video extraction with watermarks completely removed.
+- **Instagram**: High-resolution Reels, Video Posts, Stories, and multi-slide Carousels.
+- **LinkedIn**: Full support for LinkedIn HD Posts, Feed Updates, and Videos.
+- **Facebook**: Watch and Reels videos in 1080p Full HD.
+- **X / Twitter**: Multi-tier video and GIF downloads up to 1080p.
+- **Reddit, Pinterest, SoundCloud, Twitch, Vimeo, Bilibili**: Clean extraction with zero lossy compression.
 
-- **Non-Blocking Async Architecture**:
-  - All heavy extraction, downloading, and FFmpeg operations run in `asyncio.to_thread` or non-blocking async subprocesses (`asyncio.create_subprocess_exec`). The FastAPI event loop stays 100% responsive.
+### 🎨 Chameleon Glass UI Dynamic Theming
+- Automatically identifies the host platform from the URL.
+- Injects dynamic **Chameleon Glass design tokens** (`primary_color`, `secondary_color`, `accent_color`, `gradient_css`, `glass_border`, `glass_shadow`, and `glow_color`) directly into the JSON response for dynamic UI morphing.
 
-- **4K DASH Video + Audio Stream Merger**:
-  - High-resolution adaptive DASH streams (such as YouTube 4K/1080p video-only streams) are merged with pristine audio tracks via FFmpeg with zero quality degradation.
+### 🛡️ Automated YouTube Anti-Bot & PO Token Bypass
+- Includes **`bgutil-ytdlp-pot-provider`** and a managed background Node.js PO Token generator server running on port `4416`.
+- Solves YouTube InnerTube JavaScript challenges on the fly.
+- Supports hot-dropping `cookies.txt` or injecting via secure environment secrets (`COOKIES_CONTENT`) without server restarts.
 
-- **Precision Timestamp Trimming**:
-  - Keyframe-accurate clipping using `-ss` and `-to` timestamp parameters directly from a URL or an already downloaded file.
+### 🚀 4K DASH Video + Audio Stream Merger
+- Adaptive streaming formats (e.g. YouTube 4K/1080p video-only tracks) are merged with uncompressed audio tracks via high-speed FFmpeg pipes with zero generational quality loss.
 
-- **High-Fidelity Audio Transcoding & ID3 Cover Art Embedding**:
-  - Extracts and converts media to MP3 (up to 320kbps), M4A, FLAC, WAV, and Opus.
-  - Automatically embeds ID3v2 metadata (artist, title, album) and high-resolution cover art into audio files using Mutagen.
+### ✂️ Precision Timestamp Trimming
+- Keyframe-accurate clipping using `-ss` and `-to` timestamp parameters directly from a stream or downloaded file.
 
-- **Multi-Photo/Video Carousel ZIP Bundler**:
-  - Extracts Instagram carousels, Pinterest boards, and Reddit albums.
-  - Concurrently downloads all slides and packages them into a clean `.zip` archive on the fly.
+### 🎵 High-Fidelity Audio Transcoding & Cover Art Embedding
+- Converts audio to **320kbps MP3**, M4A, FLAC, WAV, and Opus.
+- Automatically embeds ID3v2 metadata (Artist, Title, Album) and high-resolution thumbnail artwork into the audio file using Mutagen.
 
-- **Reverse Media Proxy (CORS Bypass)**:
-  - Streams hotlink-protected or CORS-restricted CDN media (Instagram/TikTok CDNs) directly through the backend.
+### 📦 Multi-Photo/Video Carousel ZIP Bundler
+- Detects multi-image Instagram carousels, Pinterest boards, and Reddit albums.
+- Concurrently downloads all items and bundles them into an in-memory `.zip` archive on the fly.
 
-- **Real-Time WebSocket Progress Hooks**:
-  - Real-time download percentage, download speed (MB/s), downloaded bytes, total bytes, and ETA are broadcasted via WebSockets (`/ws/progress/{task_id}`).
-  - Built-in event state caching guarantees clients receive the latest state even upon reconnecting.
+### 📡 Real-Time WebSocket Progress Hooks
+- Broadcasts real-time download percentage, download speed (MB/s), downloaded bytes, total bytes, and ETA via WebSockets (`/api/v1/ws/{task_id}`).
 
-- **Automated TTL Garbage Collector**:
-  - Background async service automatically purges completed media files and temporary working folders older than 1 hour.
+### 🧹 Automated TTL Garbage Collector
+- Background async daemon automatically purges completed media files and temporary working directories older than 1 hour.
 
 ---
 
@@ -53,21 +73,22 @@ CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/
 │   ├── main.py                      # FastAPI entry point, CORS, Lifespan, Global Exception Handlers
 │   ├── core/
 │   │   ├── __init__.py
-│   │   ├── config.py                # BaseSettings: temp_dir, max_concurrent_tasks, cleanup_ttl_seconds
+│   │   ├── config.py                # BaseSettings, FFmpeg resolution, env cookies & proxy config
 │   │   ├── exceptions.py            # Custom exceptions (MediaExtractionError, FFmpegProcessError, etc.)
 │   │   └── logger.py                # Structured console & rotating file logger
 │   ├── schemas/
 │   │   ├── __init__.py
-│   │   └── media_schemas.py         # All Pydantic v2 Request & Response schemas
+│   │   └── media_schemas.py         # Pydantic v2 Request & Response schemas with byte casting
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── extractor_service.py     # yt-dlp + gallery-dl deep metadata & format analyzer
 │   │   ├── downloader_service.py    # Async media downloader with WebSocket progress hooks
-│   │   ├── ffmpeg_service.py        # 4K DASH merger, precision timestamp trimmer, MP3 ID3 cover art embedder
+│   │   ├── pot_service.py           # Background PO Token daemon lifecycle manager (Port 4416)
+│   │   ├── ffmpeg_service.py        # 4K DASH merger, precision trimmer & MP3 ID3 embedder
 │   │   ├── carousel_service.py      # Multi-photo/video gallery extractor & async ZIP bundler
 │   │   ├── batch_service.py         # Concurrent playlist & multi-link queue analyzer
 │   │   ├── ws_manager.py            # Real-time WebSocket connection & task state broadcaster
-│   │   └── cleanup_service.py       # Background worker to purge expired files in temp_downloads/
+│   │   └── cleanup_service.py       # Background worker purging expired files in temp_downloads/
 │   ├── api/
 │   │   ├── __init__.py
 │   │   ├── router.py                # Master APIRouter aggregating all v1 routes
@@ -76,17 +97,19 @@ CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/
 │   │   ├── routes_trim.py           # POST /api/v1/trim
 │   │   ├── routes_carousel.py       # POST /api/v1/carousel/zip & GET /api/v1/proxy-media
 │   │   ├── routes_system.py         # GET /api/v1/health
-│   │   └── routes_ws.py             # WS /ws/progress/{task_id}
+│   │   └── routes_ws.py             # WS /api/v1/ws/{task_id}
 │   └── utils/
 │       ├── __init__.py
-│       ├── platform_detector.py     # URL regex matcher + Chameleon Glass UI color palette generator
-│       ├── format_parser.py         # Cleans and groups raw yt-dlp formats into 4K/2K/1080p/720p/Audio
+│       ├── platform_detector.py     # Platform regex matcher & Chameleon Glass theme generator
+│       ├── format_parser.py         # Groups raw formats into 4K/2K/1080p/720p/Audio tiers
 │       └── file_helpers.py          # Safe filename sanitizer, timestamp parser & byte formatter
-├── temp_downloads/                  # Auto-created temporary directory for active media jobs
+├── assets/
+│   └── banner.png                   # High-resolution splash banner
+├── temp_downloads/                  # Auto-created temporary storage for active media jobs
 ├── requirements.txt
 ├── .env.example
-├── Dockerfile
-├── docker-compose.yml
+├── Dockerfile                       # Multi-stage production Dockerfile with Node.js & POT server
+├── fly.toml                         # Fly.io cloud deployment specification
 └── README.md
 ```
 
@@ -96,23 +119,24 @@ CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend/
 
 ### 1. Prerequisites
 - **Python 3.11+** installed
-- **FFmpeg** installed (System PATH, or auto-resolved via bundled `imageio-ffmpeg`)
+- **Node.js 18+** installed (for YouTube JavaScript challenge solver)
+- **FFmpeg 7.0+** installed (or auto-resolved via bundled `imageio-ffmpeg`)
 
-### 2. Installation
-Clone the repository and install dependencies:
+### 2. Local Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend.git
+git clone https://github.com/chathunga2007/CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend.git
 cd CBX-Stream-All-In-One-Universal-Social-Media-Downloader-Backend
 
 # Create and activate virtual environment
 python -m venv venv
+
 # On Windows:
 .\venv\Scripts\activate
 # On Linux/macOS:
 source venv/bin/activate
 
-# Install requirements
+# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -122,7 +146,7 @@ Copy `.env.example` to `.env`:
 cp .env.example .env
 ```
 
-### 4. Run Locally
+### 4. Run the Development Server
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
@@ -131,17 +155,26 @@ Interactive Swagger API documentation will be available at:
 
 ---
 
-## 🐳 Docker Deployment
+## ☁️ Cloud Deployment (Fly.io)
 
-Run with Docker Compose:
+This backend is pre-configured for **Fly.io** with 1GB RAM, Singapore (`sin`) region, and automatic scaling.
+
 ```bash
-docker compose up -d --build
+# 1. Install Fly CLI (Windows PowerShell)
+iwr https://fly.io/install.ps1 -useb | iex
+
+# 2. Login to Fly.io
+fly auth login
+
+# 3. Launch and deploy
+fly launch
+
+# 4. (Optional) Inject YouTube cookies securely without pushing to Git
+fly secrets set COOKIES_CONTENT="$(Get-Content cookies.txt -Raw)"
 ```
-Or build and run the Docker container directly:
-```bash
-docker build -t cbx-stream-backend .
-docker run -d -p 8000:8000 --name cbx-stream-backend cbx-stream-backend
-```
+
+Live Production Endpoint:  
+👉 **https://cbx-stream-backend.fly.dev**
 
 ---
 
@@ -149,7 +182,6 @@ docker run -d -p 8000:8000 --name cbx-stream-backend cbx-stream-backend
 
 ### 1. Analyze Media URL
 **`POST /api/v1/analyze`**
-Analyzes a social media link and returns metadata, video/audio formats, and Chameleon UI tokens.
 
 **Request:**
 ```json
@@ -159,7 +191,7 @@ Analyzes a social media link and returns metadata, video/audio formats, and Cham
 }
 ```
 
-**Response Example:**
+**Response:**
 ```json
 {
   "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -171,16 +203,11 @@ Analyzes a social media link and returns metadata, video/audio formats, and Cham
   "platform": {
     "id": "youtube",
     "name": "YouTube",
-    "icon": "youtube",
     "badge_text": "YouTube 4K Ultra HDR",
     "primary_color": "#FF0000",
     "secondary_color": "#CC0000",
     "accent_color": "#FF4D4D",
-    "gradient_css": "linear-gradient(135deg, rgba(255, 0, 0, 0.85) 0%, rgba(180, 0, 0, 0.65) 100%)",
-    "glass_border": "1px solid rgba(255, 0, 0, 0.35)",
-    "glass_shadow": "0 8px 32px 0 rgba(255, 0, 0, 0.25)",
-    "glow_color": "rgba(255, 0, 0, 0.5)",
-    "text_color": "#FFFFFF"
+    "gradient_css": "linear-gradient(135deg, rgba(255, 0, 0, 0.85) 0%, rgba(180, 0, 0, 0.65) 100%)"
   },
   "video_formats": [
     {
@@ -198,18 +225,14 @@ Analyzes a social media link and returns metadata, video/audio formats, and Cham
       "format_id": "140",
       "ext": "m4a",
       "resolution": "Audio Only",
-      "quality_label": "Lossless / HQ Audio (128 kbps)",
-      "filesize_formatted": "3.35 MB"
+      "quality_label": "HQ Audio (128k)",
+      "filesize_formatted": "3.40 MB"
     }
-  ],
-  "is_carousel": false,
-  "carousel_items": []
+  ]
 }
 ```
 
----
-
-### 2. Initiate Download Task
+### 2. Start Media Download
 **`POST /api/v1/download`**
 
 **Request:**
@@ -217,129 +240,37 @@ Analyzes a social media link and returns metadata, video/audio formats, and Cham
 {
   "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   "format_id": "137+bestaudio/best",
-  "extract_audio": false,
-  "audio_format": "mp3",
-  "audio_quality": "320",
-  "embed_metadata": true,
-  "embed_thumbnail": true
-}
-```
-
-**Response:**
-```json
-{
-  "task_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-  "status": "queued",
-  "message": "Media download queued successfully.",
-  "ws_url": "/ws/progress/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
-}
-```
-
----
-
-### 3. Stream or Download Completed File
-**`GET /api/v1/stream/{task_id}`**
-- `?inline=true`: Serves for browser video/audio player preview.
-- `?inline=false` (default): Triggers file attachment download with original filename.
-
----
-
-### 4. Precision Media Trimmer
-**`POST /api/v1/trim`**
-
-**Request:**
-```json
-{
-  "task_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-  "start_time": "00:15",
-  "end_time": "01:05",
   "extract_audio": false
 }
 ```
 
----
-
-### 5. Multi-Item Carousel ZIP Bundler
-**`POST /api/v1/carousel/zip`**
-
-**Request:**
-```json
-{
-  "media_urls": [
-    "https://example.com/slide1.jpg",
-    "https://example.com/slide2.mp4"
-  ],
-  "custom_filename": "instagram_holiday_reel"
-}
-```
-
----
-
-### 6. Reverse Media Proxy (CORS Bypass)
-**`GET /api/v1/proxy-media?url=<remote_url>`**
-Streams remote media through the backend to circumvent CORS restrictions and referer blockers.
-
----
-
-### 7. System Health & Hardware Diagnostics
-**`GET /api/v1/health`**
-
 **Response:**
 ```json
 {
-  "status": "healthy",
-  "version": "1.0.0",
-  "uptime_seconds": 1245.5,
-  "active_tasks": 0,
-  "disk_free_gb": 128.45,
-  "disk_total_gb": 476.21,
-  "ffmpeg_available": true,
-  "ffmpeg_path": "ffmpeg",
-  "python_version": "3.11.9"
+  "task_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "status": "queued",
+  "progress_percent": 0.0,
+  "ws_url": "/api/v1/ws/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "message": "Download task queued successfully."
 }
 ```
+
+### 3. Stream Completed File
+**`GET /api/v1/stream/{task_id}`**  
+Streams the completed media directly to the browser with `Content-Disposition: attachment` headers.
+
+### 4. Health Check
+**`GET /api/v1/health`**  
+Returns server uptime, active tasks, disk space, and FFmpeg readiness.
 
 ---
 
-## ⚡ Real-Time WebSocket Progress Protocol
+## 📄 License
 
-Connect to the WebSocket at:  
-`ws://localhost:8000/ws/progress/{task_id}`
-
-### Progress Event Payload Example:
-```json
-{
-  "task_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-  "status": "downloading",
-  "progress_percent": 68.4,
-  "downloaded_bytes": 14200000,
-  "total_bytes": 20760000,
-  "downloaded_formatted": "13.54 MB",
-  "total_formatted": "19.80 MB",
-  "speed": "4.20 MB/s",
-  "eta": "00:02",
-  "filename": null,
-  "stream_url": null,
-  "error": null
-}
-```
-
-When completed:
-```json
-{
-  "task_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-  "status": "completed",
-  "progress_percent": 100.0,
-  "downloaded_bytes": 20760000,
-  "total_bytes": 20760000,
-  "downloaded_formatted": "19.80 MB",
-  "total_formatted": "19.80 MB",
-  "filename": "Rick_Astley_Never_Gonna_Give_You_Up.mp4",
-  "stream_url": "/api/v1/stream/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
-}
-```
+Distributed under the **MIT License**. See `LICENSE` for more information.
 
 ---
 
-## 🛡️ License
-Released under the MIT License. Developed for seamless integration with the CBX-Stream frontend ecosystem.
+<p align="center">
+  Crafted with ❤️ by <b>Chathunga Bimsara</b> for high-performance media archiving.
+</p>
