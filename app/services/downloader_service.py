@@ -179,13 +179,14 @@ class DownloaderService:
 
             # 2. Audio Transcoding if requested and not already trimmed as audio
             elif req.extract_audio:
-                audio_name = f"{downloaded_file.stem}.{req.audio_format}"
+                audio_format = req.audio_format or "mp3"
+                audio_name = f"{downloaded_file.stem}.{audio_format}"
                 audio_path = task_dir / audio_name
                 final_file = await ffmpeg_service.convert_to_audio(
                     input_path=downloaded_file,
                     output_path=audio_path,
-                    audio_format=req.audio_format,
-                    bitrate=f"{req.audio_quality}k",
+                    audio_format=audio_format,
+                    bitrate=f"{req.audio_quality or '320'}k",
                 )
 
                 # Embed ID3 Tags & Cover art
@@ -200,13 +201,27 @@ class DownloaderService:
                         cover_art_path=thumb_path,
                     )
 
-            # 3. Custom filename renaming if specified
+            # 3. Universal Video MP4 Container Guarantee
+            else:
+                if final_file.suffix.lower() != ".mp4":
+                    mp4_name = f"{final_file.stem}.mp4"
+                    mp4_path = task_dir / mp4_name
+                    logger.info(f"Container is {final_file.suffix}; ensuring universal MP4 container: {mp4_name}")
+                    final_file = await ffmpeg_service.ensure_mp4_container(
+                        input_path=final_file,
+                        output_path=mp4_path,
+                    )
+
+            # 4. Custom filename renaming if specified
             if req.custom_filename:
                 safe_custom = sanitize_filename(req.custom_filename)
                 custom_ext = final_file.suffix
+                if not req.extract_audio and custom_ext.lower() != ".mp4":
+                    custom_ext = ".mp4"
                 renamed_path = task_dir / f"{safe_custom}{custom_ext}"
                 if renamed_path != final_file:
                     final_file = final_file.rename(renamed_path)
+
 
             # Download Complete
             task.status = "completed"
@@ -293,6 +308,17 @@ class DownloaderService:
             "geo_bypass": True,
             "socket_timeout": 30,
         }
+
+        # For video downloads: instruct yt-dlp to merge DASH video+audio directly into MP4 container
+        if not req.extract_audio:
+            ydl_opts["merge_output_format"] = "mp4"
+            ydl_opts["postprocessors"] = [
+                {
+                    "key": "FFmpegVideoRemuxer",
+                    "preferedformat": "mp4",
+                }
+            ]
+
 
         # Auto-configure JavaScript challenge solver runtime
         node_path = None
