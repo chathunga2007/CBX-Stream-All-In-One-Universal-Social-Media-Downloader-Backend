@@ -23,6 +23,7 @@ from app.core.exceptions import CBXStreamException
 from app.core.logger import get_logger, setup_root_logger
 from app.schemas.media_schemas import ErrorResponse
 from app.services.cleanup_service import cleanup_service
+from app.services.pot_service import pot_service
 from app.services.ws_manager import ws_manager
 
 logger = get_logger("cbx_stream.main")
@@ -53,12 +54,16 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Start periodic background cleanup worker
     cleanup_service.start()
 
+    # Start background YouTube PO Token generator provider
+    pot_service.start()
+
     yield
 
     # Shutdown
     logger.info("Shutting down CBX-Stream Backend...")
     await cleanup_service.stop()
-    logger.info("Cleanup worker stopped. Shutdown complete.")
+    pot_service.stop()
+    logger.info("Cleanup worker & POT service stopped. Shutdown complete.")
 
 
 # Initialize FastAPI Application
