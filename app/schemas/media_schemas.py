@@ -1,8 +1,8 @@
 """All Pydantic v2 schemas for CBX-Stream requests, responses, and WebSocket events."""
 
 from datetime import datetime, timezone
-from typing import List, Optional, Literal
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from typing import List, Optional, Literal, Any
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict, field_validator
 
 
 class PlatformTheme(BaseModel):
@@ -177,6 +177,16 @@ class DownloadProgressEvent(BaseModel):
     filename: Optional[str] = None
     stream_url: Optional[str] = None
     error: Optional[str] = None
+
+    @field_validator("downloaded_bytes", "total_bytes", mode="before")
+    @classmethod
+    def parse_bytes(cls, v: Any) -> int:
+        if v is None:
+            return 0
+        try:
+            return int(round(float(v)))
+        except (ValueError, TypeError):
+            return 0
 
 
 class TrimRequest(BaseModel):
