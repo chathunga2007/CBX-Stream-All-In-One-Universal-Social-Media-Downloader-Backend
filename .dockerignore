@@ -1,0 +1,69 @@
+# flyctl launch added from .gitignore
+# Byte-compiled / optimized / DLL files
+**/__pycache__
+**/*.py[cod]
+**/*$py.class
+
+# Environments & Secrets
+**/.env
+**/.venv
+**/env
+**/venv
+**/ENV
+**/cookies.txt
+**/*cookies*.txt
+
+# Temp Downloads & Artifacts
+**/temp_downloads/*
+!**/temp_downloads/.gitkeep
+
+# Logs
+**/logs/*
+!**/logs/.gitkeep
+**/*.log
+
+# IDE files
+**/.vscode
+**/.idea
+**/*.sublime-project
+**/*.sublime-workspace
+**/.DS_Store
+**/node_modules
+**/bgutil-pot-server
+
+# flyctl launch added from bgutil-pot-server/.gitignore
+bgutil-pot-server/**/build
+bgutil-pot-server/**/node_modules
+bgutil-pot-server/**/tsconfig.tsbuildinfo
+
+bgutil-pot-server/**/dist
+bgutil-pot-server/**/__pycache__
+bgutil-pot-server/**/plugin/CHANGELOG.md
+bgutil-pot-server/**/**.pyc
+bgutil-pot-server/**/**.pyo
+
+bgutil-pot-server/**/yt-dlp
+bgutil-pot-server/**/yt-dlp.exe
+bgutil-pot-server/**/yt-dlp_macos
+bgutil-pot-server/**/yt-dlp_x86.exe
+bgutil-pot-server/**/yt-dlp_min.exe
+bgutil-pot-server/**/yt-dlp_linux
+bgutil-pot-server/**/yt-dlp_linux_armv7l
+bgutil-pot-server/**/yt-dlp_linux_aarch64
+bgutil-pot-server/**/yt-dlp_win.zip
+bgutil-pot-server/**/yt-dlp_macos.zip
+bgutil-pot-server/**/yt-dlp_macos_legacy
+# yt-dlp binaries
+bgutil-pot-server/**/yt-dlp
+# yt-dlp source code
+
+bgutil-pot-server/tmp
+bgutil-pot-server/**/cache.json
+
+# README copied into plugin/ during release builds
+bgutil-pot-server/**/plugin/README.md
+
+# flyctl launch added from venv/.gitignore
+# Created by venv; see https://docs.python.org/3/library/venv.html
+venv/**/*
+fly.toml
