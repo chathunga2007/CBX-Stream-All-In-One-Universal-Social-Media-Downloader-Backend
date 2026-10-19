@@ -319,6 +319,47 @@ class FFmpegService:
         await self._run_command(cmd, "Frame Thumbnail Extraction")
         return output_image_path
 
+    async def ensure_mp4_container(self, input_path: Path, output_path: Path) -> Path:
+        """Convert or remux any video container (webm, mkv, avi, etc.) into standard universal MP4.
+
+        Attempts fast stream copy first (-c:v copy -c:a aac -movflags +faststart).
+        If video copy fails (e.g. incompatible stream in strict MP4), falls back to high-speed H.264 encode.
+        """
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        # Attempt copy video, convert audio to AAC for 100% universal compatibility on Windows, Mac, iOS, Android
+        cmd = [
+            self.ffmpeg_bin,
+            "-y",
+            "-i", str(input_path),
+            "-c:v", "copy",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-movflags", "+faststart",
+            str(output_path),
+        ]
+        try:
+            await self._run_command(cmd, "Fast MP4 Remux with AAC Audio")
+            if output_path.exists() and output_path.stat().st_size > 0:
+                return output_path
+        except Exception as e:
+            logger.info(f"Fast stream copy to MP4 failed ({e}); transcoding video to H.264 MP4...")
+            transcode_cmd = [
+                self.ffmpeg_bin,
+                "-y",
+                "-i", str(input_path),
+                "-c:v", "libx264",
+                "-preset", "veryfast",
+                "-crf", "22",
+                "-c:a", "aac",
+                "-b:a", "192k",
+                "-movflags", "+faststart",
+                str(output_path),
+            ]
+            await self._run_command(transcode_cmd, "H.264 Universal MP4 Transcode")
+            return output_path
+        return output_path
+
 
 # Singleton FFmpeg service instance
 ffmpeg_service = FFmpegService()
+
